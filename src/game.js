@@ -16,6 +16,7 @@ class Game extends React.Component {
 		}
 	}
 
+
 	handleClick(i) {
 		const {xIsNext, history} = this.state;
 		const current = history[history.length - 1];
@@ -31,6 +32,25 @@ class Game extends React.Component {
 			xIsNext: !xIsNext,
 			history: history.concat([{squares}]),
 			stepNumber: ++this.state.stepNumber
+		});
+	}
+
+	printMoves() {
+		return this.state.history.map((step, move) => {
+			const desc = move ? ('Move #' + move) : 'Start game';
+
+			return (
+					<li key={move}>
+						<a href="#" onClick={() => this.jumpTo(move)} > {desc} </a>
+					</li>
+				);
+		});
+	}
+
+	jumpTo(step) {
+		this.setState({
+			stepNumber: step,
+			xIsNext: (step % 2) ? false : true
 		});
 	}
 
@@ -57,7 +77,8 @@ class Game extends React.Component {
 					</div>
 					<div className='game-info'>
 						<div>{status}</div>
-						<ul>{/*history*/}</ul>
+						<div>History:</div>
+						<ul>{this.printMoves()}</ul>
 					</div>
 				</div>
 			)
